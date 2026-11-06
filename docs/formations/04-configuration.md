@@ -173,6 +173,8 @@ Un paramètre est écrit dans le conteneur compilé. Une variable est lue pendan
 | Une variable d'environnement | Visible tout de suite | Visible tout de suite |
 | Le paramètre de `services.yaml` | Visible tout de suite : Symfony recompile | Invisible avant `cache:clear` |
 
+Une exception à « visible tout de suite » : après `composer dump-env`, le fichier `.env.local.php` fige les valeurs des fichiers `.env`. Les modifier ensuite ne change plus rien tant que ce fichier n'a pas été régénéré par une nouvelle commande `composer dump-env`. Une vraie variable d'environnement reste prioritaire.
+
 C'est vérifiable : en `prod`, passer `km` à `2000` dans le YAML laisse `1 km = 1000 m` à l'écran, jusqu'à `php bin/console cache:clear --env=prod`.
 
 ## Commandes officielles utilisées

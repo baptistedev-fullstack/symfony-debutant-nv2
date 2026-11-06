@@ -105,7 +105,7 @@ Les deux messages sont écrits en dur. Aucun ne contient ce que l'utilisateur a 
 
 Deux raisons :
 
-- **Ne jamais réécrire une saisie brute dans une page.** Si `de` valait `<script>...</script>`, le réafficher exposerait à une attaque **XSS**, du code injecté et exécuté dans la page. L'[échappement de Twig](https://github.com/baptistedev-fullstack/symfony-debutant-nv1/blob/main/docs/formations/05-twig.md) protège déjà, mais ne pas réécrire la saisie est une défense de plus. `testUnknownUnitIsNotReflected` vérifie que `<script>` n'apparaît pas dans le HTML.
+- **Ne jamais réécrire une saisie brute dans une page.** Si `de` valait `<script>...</script>`, le réafficher exposerait à une attaque **XSS**, du code injecté et exécuté dans la page. L'[échappement de Twig](https://github.com/baptistedev-fullstack/symfony-debutant-nv1/blob/main/docs/formations/05-twig.md) protège déjà, mais ne pas réécrire la saisie est une défense de plus. `testUnknownUnitIsNotReflected` vérifie, pour chacune des deux unités, que ni `<script` ni `&lt;script` n'apparaissent dans le HTML. Ce test ne prouve pas à lui seul l'absence de réflexion : l'échappement de Twig empêcherait `<script>` de passer, mais `&lt;script` trahirait une valeur réécrite, et le test cherche aussi cette forme.
 - **Le message d'une exception s'adresse au développeur.** Ce texte n'est pas pensé pour un visiteur.
 
 Le prix à payer est connu : un visiteur reçoit le même `Cette conversion n'est pas possible.`, qu'il s'agisse d'unités incompatibles, du zéro absolu ou d'un résultat trop grand. Le message précis, comme `Une température ne peut pas être inférieure au zéro absolu.`, existe dans l'exception, mais n'est pas affiché.

@@ -14,7 +14,7 @@ Ce projet utilise trois classes de base, qui prouvent des choses différentes :
 |---|---|---|---|
 | `TestCase` | Non | `LinearConverterTest`, `TemperatureConverterTest`, `UnitConverterTest` | 22 |
 | `KernelTestCase` | Oui, sans requête HTTP | `UnitConverterServiceTest` | 3 |
-| `WebTestCase` | Oui, avec un navigateur simulé | `ConverterControllerTest` | 15 |
+| `WebTestCase` | Oui, avec un navigateur simulé | `ConverterControllerTest` | 18 |
 
 S'y ajoutent les 4 tests de `DocsConsistencyTest`, repris du [niveau précédent](https://github.com/baptistedev-fullstack/symfony-debutant-nv1/blob/main/docs/formations/07-tests.md) sans changer leurs règles.
 
@@ -159,7 +159,7 @@ Ce conteneur spécial donne accès aux services privés. Il a toutefois une limi
 Essayez de retirer cet usage. Avec une classe présente dans `src/` mais que personne n'utilise, ou avec un contrôleur qui n'injecte plus `UnitConverter`, le test échoue ainsi :
 
 ```text
-Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException: The "App\Conversion\Unused" service or alias has been removed or inlined when the container was compiled.
+Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException: The "App\Conversion\Unused" service or alias has been removed or inlined when the container was compiled. You should either make it public, or stop using the container directly and use dependency injection instead.
 ```
 
 ### `WebTestCase` : le dernier maillon
@@ -172,7 +172,7 @@ self::assertSelectorTextContains('output.result', '1 km = 1000 m');
 self::assertSelectorExists('input[name="valeur"][value="1"]');
 ```
 
-Les saisies fausses passent par un fournisseur de données, `invalidNumbers()`, et chaque cas compte pour un test : c'est pourquoi la classe a 12 méthodes de test, mais 15 tests.
+Les saisies fausses passent par deux fournisseurs de données, `invalidNumbers()` et `unknownUnits()`, et chaque cas compte pour un test : c'est pourquoi la classe a 14 méthodes de test, mais 18 tests.
 
 ### Ce qui change en environnement de test
 
@@ -196,7 +196,7 @@ php bin/console make:test TestCase 'Conversion\LinearConverterTest'
 php bin/console make:test KernelTestCase 'Conversion\UnitConverterServiceTest'
 ```
 
-`make:test` crée un fichier de test vide. Le premier argument choisit la classe de base.
+`make:test` génère un squelette de test, avec un `testSomething()` provisoire à remplacer. Le premier argument choisit la classe de base.
 
 ## À retenir
 

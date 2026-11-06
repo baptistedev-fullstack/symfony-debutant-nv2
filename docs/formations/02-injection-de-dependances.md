@@ -143,7 +143,7 @@ Le contrôleur, lui, est public, et porte les tags dont on parlait :
 
 ### Le conteneur écrit vos `new`
 
-Il n'y a pas de magie à l'exécution. Symfony **compile** le conteneur : il génère du PHP dans `var/cache/dev/`, et ne recommence que si la configuration change. Après une première requête, cherchez `getUnitConverterService.php` dans un dossier `var/cache/dev/Container*/` :
+Il n'y a pas de magie à l'exécution. Symfony **compile** le conteneur : il génère du PHP dans `var/cache/dev/`, et ne recommence que si un fichier surveillé change : en `dev`, la configuration, mais aussi les classes de `src/`. Après une première requête, cherchez `getUnitConverterService.php` dans un dossier `var/cache/dev/Container*/` :
 
 ```php
 return $container->privates['App\\Conversion\\UnitConverter'] = new \App\Conversion\UnitConverter(new RewindableGenerator(function () use ($container) {
@@ -158,7 +158,7 @@ Le nom du dossier change d'une compilation à l'autre. Ce fichier ne se modifie 
 
 ### Quand l'autowiring ne peut pas choisir
 
-Le conteneur s'appuie sur les types. Il lui faut donc une réponse unique. `ConverterInterface` a deux implémentations : si un argument demandait ce type, le conteneur ne saurait pas laquelle donner. L'essai sur `index()` échoue avec ce message :
+Le conteneur s'appuie sur les types. Il lui faut donc une réponse unique. `ConverterInterface` a deux implémentations : si un argument demandait ce type, le conteneur ne saurait pas laquelle donner. L'essai sur `index()` échoue avec la fin d'un message plus long, qui commence par `Controller "App\Controller\ConverterController::index" requires the "$x" argument that could not be resolved.` :
 
 ```text
 Cannot autowire argument $x of "App\Controller\ConverterController::index()": it references interface "App\Conversion\ConverterInterface" but no such service exists. You should maybe alias this interface to one of these existing services: "App\Conversion\LinearConverter", "App\Conversion\TemperatureConverter".

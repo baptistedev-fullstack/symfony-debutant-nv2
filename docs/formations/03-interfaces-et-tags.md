@@ -118,7 +118,7 @@ parameters:
     app.conversion.units:
         longueur: { mm: 0.001, cm: 0.01, m: 1, km: 1000, ft: 0.3048, mi: 1609.344 }
         masse: { g: 1, kg: 1000, oz: 28.349523125, lb: 453.59237 }
-        duree: { s: 1, min: 60, h: 3600 }
+        durée: { s: 1, min: 60, h: 3600 }
 ```
 
 **Avec un calcul différent.** Créez une classe dans `src/Conversion/` qui implémente le contrat :
