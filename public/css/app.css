@@ -1,0 +1,37 @@
+body {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input,
+select,
+button {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem;
+    font: inherit;
+}
+
+[role="alert"] {
+    padding: 0.5rem 1rem;
+    border-left: 4px solid #b00020;
+    background: #fdecea;
+    color: #7a0016;
+}
+
+output.result {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-left: 4px solid #1b7f3b;
+    background: #e8f5ec;
+    font-size: 1.25rem;
+    overflow-wrap: anywhere;
+}

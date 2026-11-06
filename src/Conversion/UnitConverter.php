@@ -46,7 +46,8 @@ final class UnitConverter
                 throw new UnsupportedConversionException('Le résultat est trop grand pour être affiché.');
             }
 
-            return round($result, $this->precision);
+            // + 0.0 transforme -0.0 en 0.0 : sans lui, un petit résultat négatif arrondi s'afficherait « -0 ».
+            return round($result, $this->precision) + 0.0;
         }
 
         throw new UnsupportedConversionException(sprintf('Conversion impossible entre « %s » et « %s ».', $from, $to));

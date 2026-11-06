@@ -25,6 +25,13 @@ final class UnitConverterTest extends TestCase
         self::assertSame(1.61, (new UnitConverter([$stub], 2))->convert(1.0, 'mi', 'km'));
     }
 
+    public function testNeverReturnsNegativeZero(): void
+    {
+        $stub = $this->converter(supports: true, result: -0.00001);
+
+        self::assertSame('0', (string) (new UnitConverter([$stub], 2))->convert(1.0, 'a', 'b'));
+    }
+
     public function testRefusesWhenNoConverterSupportsTheUnits(): void
     {
         $this->expectException(UnsupportedConversionException::class);

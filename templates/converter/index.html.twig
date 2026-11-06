@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Convertisseur d'unités{% endblock %}
+
+{% block body %}
+    <h1>Convertisseur d'unités</h1>
+
+    <form method="get" action="{{ path('app_converter') }}">
+        <p>
+            <label for="valeur">Valeur</label>
+            <input type="number" step="any" id="valeur" name="valeur" required{% if valeur is not null %} value="{{ valeur }}"{% endif %}>
+        </p>
+        <p>
+            <label for="de">De</label>
+            <select id="de" name="de" required>
+                <option value=""{% if de is null %} selected{% endif %} disabled>Choisir</option>
+                {% for category, names in units %}
+                    <optgroup label="{{ category }}">
+                        {% for unit in names %}
+                            <option value="{{ unit }}"{% if unit == de %} selected{% endif %}>{{ unit }}</option>
+                        {% endfor %}
+                    </optgroup>
+                {% endfor %}
+            </select>
+        </p>
+        <p>
+            <label for="vers">Vers</label>
+            <select id="vers" name="vers" required>
+                <option value=""{% if vers is null %} selected{% endif %} disabled>Choisir</option>
+                {% for category, names in units %}
+                    <optgroup label="{{ category }}">
+                        {% for unit in names %}
+                            <option value="{{ unit }}"{% if unit == vers %} selected{% endif %}>{{ unit }}</option>
+                        {% endfor %}
+                    </optgroup>
+                {% endfor %}
+            </select>
+        </p>
+        <p><button type="submit">Convertir</button></p>
+    </form>
+
+    {% if error %}
+        <p role="alert">{{ error }}</p>
+    {% endif %}
+
+    {% if result is not null %}
+        <output class="result">{{ valeur }} {{ de }} = {{ result }} {{ vers }}</output>
+    {% endif %}
+{% endblock %}
