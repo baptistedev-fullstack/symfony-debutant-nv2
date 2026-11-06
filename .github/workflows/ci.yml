@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Installer PHP
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+        with:
+          php-version: '8.5'
+          extensions: intl
+          tools: composer
+          coverage: none
+
+      - name: Repérer le cache Composer
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Restaurer le cache Composer
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Valider composer.json
+        run: composer validate --strict
+
+      - name: Installer les dépendances
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Linter la configuration YAML
+        run: php bin/console lint:yaml config
+
+      - name: Linter les templates Twig
+        run: php bin/console lint:twig templates
+
+      - name: Linter le conteneur
+        run: php bin/console lint:container
+
+      - name: Lancer les tests
+        run: php bin/phpunit
+
+      - name: Auditer les dépendances
+        run: composer audit
+
+  docker:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Démarrer les conteneurs
+        run: docker compose up -d --build
+
+      - name: Vérifier qu'une conversion répond
+        run: |
+          body=$(curl --retry 10 --retry-delay 2 --retry-all-errors --max-time 10 -fsS 'http://localhost:8080/?valeur=1&de=km&vers=m')
+          grep -q '1 km = 1000 m' <<<"$body"
+
+      - name: Lancer les tests dans le conteneur
+        run: docker compose exec -T app php bin/phpunit
+
+      - name: Arrêter les conteneurs
+        if: always()
+        run: docker compose down -v

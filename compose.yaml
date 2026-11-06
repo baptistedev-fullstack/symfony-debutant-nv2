@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8080:80"
+    volumes:
+      - .:/app
+      - /app/vendor
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
