@@ -1,0 +1,10 @@
+.git
+.github
+.env.local
+.env.local.php
+.env.*.local
+config/secrets/**/*.decrypt.private.php
+var
+vendor
+docs
+.DS_Store
