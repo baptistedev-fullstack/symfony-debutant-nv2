@@ -116,7 +116,7 @@ if (null === $valeur && null === $de && null === $vers) {
 
 Si aucun paramètre n'est présent, le visiteur arrive sur la page : pas d'erreur à afficher. Dès qu'un paramètre existe, tout est vérifié : `/?de=km` répond 422. Après cette étape, soit la saisie est valide et le service calcule, soit le message d'erreur s'affiche.
 
-Le tableau `$context` contient toutes les clés dès le départ, même à `null`. C'est nécessaire parce que `strict_variables: true`, posé sous `when@test` dans [config/packages/twig.yaml](../../config/packages/twig.yaml), transforme en test une variable absente du template en erreur : retirer la clé `error` fait échouer des tests de la page.
+Le tableau `$context` contient toutes les clés dès le départ, même à `null`. C'est nécessaire parce que `strict_variables` transforme une variable absente du template en erreur. Ce réglage suit le mode debug : il est déjà actif en `dev` et en `test`, et désactivé en `prod`, comme l'explique [la fiche Twig du niveau précédent](https://github.com/baptistedev-fullstack/symfony-debutant-nv1/blob/main/docs/formations/05-twig.md). Retirer la clé `error` fait échouer des tests de la page.
 
 ### Pourquoi pas de jeton CSRF
 

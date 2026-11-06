@@ -176,7 +176,7 @@ Les saisies fausses passent par un fournisseur de données, `invalidNumbers()`, 
 
 ### Ce qui change en environnement de test
 
-- `strict_variables: true` n'est posé que sous `when@test` dans [config/packages/twig.yaml](../../config/packages/twig.yaml) : une variable absente d'un template devient une erreur.
+- `strict_variables` fait d'une variable absente d'un template une erreur. Il suit le mode debug : il est donc déjà actif en `dev` et en `test`, et désactivé en `prod`. La ligne placée sous `when@test` dans [config/packages/twig.yaml](../../config/packages/twig.yaml) le garantit seulement en `test`, même si le debug est coupé. Voir [la fiche Twig du niveau précédent](https://github.com/baptistedev-fullstack/symfony-debutant-nv1/blob/main/docs/formations/05-twig.md).
 - `.env.local` n'est pas lu, voir [la fiche sur la configuration](04-configuration.md).
 - `failOnDeprecation`, `failOnNotice` et `failOnWarning`, dans [phpunit.dist.xml](../../phpunit.dist.xml), font échouer la suite au moindre avertissement.
 

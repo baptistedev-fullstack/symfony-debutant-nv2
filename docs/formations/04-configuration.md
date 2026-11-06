@@ -116,7 +116,7 @@ php bin/console debug:container --env-var=APP_CONVERSION_PRECISION
 
 `"4"` entre, `4` sort.
 
-Soyons précis sur son utilité. Sans `int:`, ce projet marche quand même, tests et `lint:container` compris : ses fichiers n'activent pas `strict_types`, donc PHP convertit lui-même `"4"` en `4`. Le processeur rend la conversion explicite et donne une meilleure erreur. Avec `APP_CONVERSION_PRECISION=abc` :
+Soyons précis sur son utilité. Sans `int:`, ce projet marche quand même, tests et `lint:container` compris : l'appel `new UnitConverter(...)` se trouve dans le fichier généré `getUnitConverterService.php`, qui n'active pas `strict_types`, donc PHP convertit lui-même `"4"` en `4`. Cette règle dépend du fichier qui fait l'appel : ajouter `declare(strict_types=1);` à `UnitConverter.php` n'y changerait rien. Le processeur rend la conversion explicite et donne une meilleure erreur. Avec `APP_CONVERSION_PRECISION=abc` :
 
 | Écriture | Erreur obtenue |
 |---|---|
