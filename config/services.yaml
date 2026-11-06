@@ -7,6 +7,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.conversion.units:
+        longueur: { mm: 0.001, cm: 0.01, m: 1, km: 1000, ft: 0.3048, mi: 1609.344 }
+        masse: { g: 1, kg: 1000, oz: 28.349523125, lb: 453.59237 }
 
 services:
     # default configuration for services in *this* file
