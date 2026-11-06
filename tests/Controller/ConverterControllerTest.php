@@ -66,7 +66,7 @@ final class ConverterControllerTest extends WebTestCase
         $client->request('GET', '/?'.$query);
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorExists('[role="alert"]');
+        self::assertSelectorTextSame('[role="alert"]', 'Indiquez un nombre valide et deux unités.');
         self::assertSelectorNotExists('output.result');
         self::assertSelectorNotExists('input[name="valeur"][value]');
     }
@@ -88,7 +88,7 @@ final class ConverterControllerTest extends WebTestCase
         $client->request('GET', '/?valeur=1&de=km');
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorExists('[role="alert"]');
+        self::assertSelectorTextSame('[role="alert"]', 'Indiquez un nombre valide et deux unités.');
         self::assertSelectorExists('input[name="valeur"][value="1"]');
         self::assertSelectorExists('select[name="de"] option[value="km"][selected]');
     }
@@ -99,7 +99,7 @@ final class ConverterControllerTest extends WebTestCase
         $client->request('GET', '/?valeur=1&de=km&vers=kg');
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorExists('[role="alert"]');
+        self::assertSelectorTextSame('[role="alert"]', 'Cette conversion n\'est pas possible.');
     }
 
     public function testBelowAbsoluteZeroShowsAMessage(): void
@@ -108,7 +108,7 @@ final class ConverterControllerTest extends WebTestCase
         $client->request('GET', '/?valeur=-300&de=C&vers=F');
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorExists('[role="alert"]');
+        self::assertSelectorTextSame('[role="alert"]', 'Cette conversion n\'est pas possible.');
     }
 
     public function testInfiniteResultShowsAMessage(): void
@@ -117,18 +117,51 @@ final class ConverterControllerTest extends WebTestCase
         $client->request('GET', '/?valeur=1e308&de=km&vers=mm');
 
         self::assertResponseStatusCodeSame(422);
-        self::assertSelectorExists('[role="alert"]');
+        self::assertSelectorTextSame('[role="alert"]', 'Cette conversion n\'est pas possible.');
         self::assertStringNotContainsString('INF', $client->getResponse()->getContent());
     }
 
-    public function testUnknownUnitIsNotReflected(): void
+    #[DataProvider('unknownUnits')]
+    public function testUnknownUnitIsNotReflected(string $query): void
     {
         $client = static::createClient();
-        $client->request('GET', '/?valeur=1&de=%3Cscript%3E&vers=m');
+        $client->request('GET', '/?'.$query);
 
         self::assertResponseStatusCodeSame(422);
-        self::assertStringNotContainsString('<script>', $client->getResponse()->getContent());
-        self::assertSelectorNotExists('option[selected][value="<script>"]');
+        self::assertSelectorTextSame('[role="alert"]', 'Indiquez un nombre valide et deux unités.');
+        $content = (string) $client->getResponse()->getContent();
+        self::assertStringNotContainsString('<script', $content);
+        self::assertStringNotContainsString('&lt;script', $content);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function unknownUnits(): iterable
+    {
+        yield 'unité de départ' => ['valeur=1&de=%3Cscript%3E&vers=m'];
+        yield 'unité d\'arrivée' => ['valeur=1&de=km&vers=%3Cscript%3E'];
+    }
+
+    public function testZeroIsAValidValue(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/?valeur=0&de=km&vers=m');
+
+        self::assertResponseStatusCodeSame(200);
+        self::assertSelectorTextContains('output.result', '0 km = 0 m');
+        self::assertSelectorExists('input[name="valeur"][value="0"]');
+        self::assertSelectorNotExists('[role="alert"]');
+    }
+
+    public function testSurroundingSpacesAreAccepted(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/?valeur=%201%20&de=km&vers=m');
+
+        self::assertResponseStatusCodeSame(200);
+        self::assertSelectorTextContains('output.result', '1 km = 1000 m');
+        self::assertSelectorExists('input[name="valeur"][value="1"]');
     }
 
     public function testArrayParameterIsNotFound(): void
