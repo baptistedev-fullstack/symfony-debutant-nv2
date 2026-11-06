@@ -24,3 +24,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+when@test:
+    services:
+        # Aucun contrôleur n'injecte encore ce service : sans cette ligne, le conteneur le supprime
+        # et KernelTestCase ne peut pas le lire.
+        App\Conversion\UnitConverter:
+            autowire: true
+            public: true
