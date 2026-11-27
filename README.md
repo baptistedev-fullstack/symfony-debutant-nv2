@@ -70,7 +70,7 @@ Ce niveau n'a pas de base de données : il n'y a donc pas de `docs/base-de-donne
 ## Navigation dans le parcours
 
 - Niveau précédent : [symfony-debutant-nv1](https://github.com/baptistedev-fullstack/symfony-debutant-nv1).
-- Niveau suivant : [symfony-debutant-nv3](https://github.com/baptistedev-fullstack/symfony-debutant-nv3) (à venir).
+- Niveau suivant : [symfony-debutant-nv3](https://github.com/baptistedev-fullstack/symfony-debutant-nv3).
 
 ## Licence
 

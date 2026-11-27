@@ -24,14 +24,14 @@ Ce niveau n'ajoute aucun paquet à ceux de Debutant-Nv1 : services, conteneur et
 
 | Paquet | Version | Rôle |
 |---|---|---|
-| `symfony/asset` | v8.1.0 | La fonction `asset()`, qui donne l'URL de la feuille de style |
-| `symfony/console` | v8.1.11 | Les commandes `bin/console` |
+| `symfony/asset` | v8.1.12 | La fonction `asset()`, qui donne l'URL de la feuille de style |
+| `symfony/console` | v8.1.12 | Les commandes `bin/console` |
 | `symfony/dotenv` | v8.1.6 | La lecture des fichiers `.env` |
 | `symfony/flex` | v2.12.0 | Le plugin Composer qui applique les recettes |
-| `symfony/framework-bundle` | v8.1.11 | Le cœur de Symfony : Kernel, contrôleurs, configuration |
-| `symfony/runtime` | v8.1.11 | Le démarrage de l'application depuis `public/index.php` |
+| `symfony/framework-bundle` | v8.1.12 | Le cœur de Symfony : Kernel, contrôleurs, configuration |
+| `symfony/runtime` | v8.1.12 | Le démarrage de l'application depuis `public/index.php` |
 | `symfony/twig-bundle` | v8.1.9 | L'intégration de Twig |
-| `symfony/yaml` | v8.1.11 | La lecture des fichiers YAML et `lint:yaml` |
+| `symfony/yaml` | v8.1.13 | La lecture des fichiers YAML et `lint:yaml` |
 
 `composer.json` exige aussi deux extensions de PHP, `ext-ctype` et `ext-iconv`, présentes dans l'image Docker.
 
@@ -40,7 +40,7 @@ Ce niveau n'ajoute aucun paquet à ceux de Debutant-Nv1 : services, conteneur et
 | Paquet | Version | Rôle |
 |---|---|---|
 | `phpunit/phpunit` | 13.4.6 | Le lancement des tests |
-| `symfony/browser-kit` | v8.1.11 | Le navigateur simulé des tests fonctionnels |
+| `symfony/browser-kit` | v8.1.13 | Le navigateur simulé des tests fonctionnels |
 | `symfony/css-selector` | v8.1.10 | Les sélecteurs CSS dans les assertions |
 | `symfony/maker-bundle` | 1.68.0 | Les commandes `make:*` qui génèrent du code |
 
